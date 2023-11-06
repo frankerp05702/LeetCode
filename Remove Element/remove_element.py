@@ -2,21 +2,13 @@ from typing import List
 
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
-        dec_indx = len(nums)-1
-        for i,num in enumerate(nums):
-            if num==val:
-                filler='a'
-                for j in range(dec_indx,i,-1):
-                    if nums[j]!=val:
-                        filler=nums.pop(j)
-                        dec_indx=j-1
-                        break
-                if filler!='a':
-                    nums[i]=filler
-                else:
-                    for x in range(len(nums)-1,i,-1):
-                        nums.pop(x)
-                    nums.pop(i)
+        match=True
+        i=0
+        while(match):
+            try:
+                nums.remove(val)
+            except ValueError:
+                match=False
         return len(nums)
 
 
@@ -59,3 +51,13 @@ s = Solution()
 k = s.removeElement(nums, val)
 print(k)
 print(nums)
+
+
+# Runtime
+# Details
+# 40ms
+# Beats 60.23%of users with Python3
+# Memory
+# Details
+# 16.20MB
+# Beats 73.57%of users with Python3
