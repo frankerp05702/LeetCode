@@ -30,3 +30,11 @@ s = Solution()
 elem = s.majorityElement(nums)
 print(elem)
 
+# Runtime
+# Details
+# 147ms
+# Beats 74.03%of users with Python3
+# Memory
+# Details
+# 17.74MB
+# Beats 74.09%of users with Python3
