@@ -2,6 +2,16 @@ from typing import List
 
 
 class Solution:
+    def registerWords(self, s: str, current: int, start: int, ml: int, word_occurrences):
+        r_occ = {}
+        # Register words
+        while current >= start:
+            word = self.getWordByIndex(s, current, ml)
+            current -= ml
+            if word in word_occurrences:
+                if word in r_occ: r_occ[word] += 1
+                else: r_occ[word] = 1
+        return r_occ
     def getWordByIndex(self, s: str, current: int, ml: int) -> str:
         word = ""
         for i in range(current, current + ml):
@@ -23,24 +33,18 @@ class Solution:
             else: word_occurrences[word] = 1
 
         result = []
+        r_occ = {}
         for end in range(n - 1, substr_len - 2, -1):
             start = end - substr_len + 1
-            r_occ = {}
-            current = start
-            # Register words
-            dont_bother = False
-            while current <= end - ml + 1:
-                word = self.getWordByIndex(s, current, ml)
-                if word not in word_occurrences:
-                    dont_bother = True
-                    break
-                else:
-                    if word in r_occ: r_occ[word] += 1
-                    else: r_occ[word] = 1
-                current += ml
+            if end == n-1:
+                # Register words
+                r_occ = self.registerWords(s, end + 1 - ml, start, ml, word_occurrences)
+            else:
+                word = self.getWordByIndex(s, start, ml)
+                if word in word_occurrences:
+                    # Register words
+                    r_occ = self.registerWords(s, end + 1 - ml, start, ml, word_occurrences)
             # If all occurrences match, append start to result
-            if dont_bother:
-                continue
             match = True
             for key in word_occurrences.keys():
                 if key not in r_occ or r_occ[key] < word_occurrences[key]:
@@ -48,6 +52,13 @@ class Solution:
                     break
             if match:
                 result.append(start)
+            # Unregister word that will be out of range in next iteration
+            to_delete = self.getWordByIndex(s, end - ml + 1, ml)
+            if to_delete in r_occ:
+                if r_occ[to_delete] > 1:
+                    r_occ[to_delete] -= 1
+                else:
+                    del r_occ[to_delete]
 
         result.sort()
         return result
