@@ -1,0 +1,15 @@
+Solution:
+1. Find insert point. Index of intervals to insert array in.
+    ...Using binary search would be efficient if you would only have to find the insert index. But here, is necessary to insert, resolve overlapping, and then return the result intervals array. (Explore this in solution2...)
+    ...So, I think its better to just iterate by intervals and copy into a result array. On insert point iteration, resolve overlapping. Continue iterating and copying to result array. Then return result.
+
+2. What is an overlapping in this case
+    interval[0] < newInterval[0] and newInterval[0] < interval[1]
+        current_interval[0] = [interval[0]]
+        current_max = max(current_max, interval[1])
+        current_max = max(current_max, newInterval[1])
+
+    newInterval[0] < interval[0] and newInterval[1] > interval[1]
+        current_interval[0] = [newInterval[0]]
+        current_max = max(current_max, interval[1])
+        current_max = max(current_max, newInterval[1])
