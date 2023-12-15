@@ -31,29 +31,31 @@ class Solution:
         return self.addTwoNumbers(prev, prev2)
            
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        sum, carrier = 0, 0
-        first_node = True
-        prev = None
-        while l1 or l2:
-            a = l1.val if l1 else 0
-            b = l2.val if l2 else 0
-            sum = a + b + carrier
-            if sum > 9:
-                carrier = sum // 10
-                sum = sum % 10
-            else:
-                carrier = 0
-            n3 = ListNode(sum)
-            if not first_node: prev.next = n3
-            if first_node:
-                l3 = n3
-                first_node = False
-            prev = n3
-            l1 = l1.next if l1 and l1.next else None
-            l2 = l2.next if l2 and l2.next else None
-        if carrier:
-            if not first_node: prev.next = ListNode(carrier)
-        return l3
+        dummy = ListNode(0)
+        curr = dummy
+        carry = 0
+
+        #this one is very important, because it's possible the last operation, we get one extra carry:
+
+        while carry or l1 or l2:
+        
+        #We already put some values in carry, if L1 is not empty, then add it, if L2 is not empty, 
+        #then add it
+        #finally, calculate the carry and create the next node:
+
+            if l1:
+                carry += l1.val
+                l1 = l1.next
+        
+            if l2:
+                carry += l2.val
+                l2 = l2.next
+        
+            curr.next = ListNode(carry % 10)
+            carry //= 10
+            curr = curr.next
+
+        return dummy.next
 
 
 # Example 1
